@@ -7,15 +7,16 @@
 // Description : first attempt in C++
 //============================================================================
 
-#include<cstdio>
-#include<fstream>
-#include<iostream>
-#include<ctime>
+#include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <ctime>
+#include <iomanip>
 #define MAXN 50005
 #define MAXM 5000005
 #define INPUT_FILE_NAME "WikiData.txt"
 #define OUTPUT_FILE_NAME "WikiData_out.txt"
-#define OUTPUT_INFORMATION_FINE_NAME "WikiData_out_info.txt"
+#define OUTPUT_INFORMATION_FILE_NAME "file_info.txt"
 
 using namespace std;
 
@@ -25,12 +26,16 @@ void random_calculate();
 
 void output_to_file();
 
+string getTime();
+
 int point[MAXN],ending[MAXM],next[MAXM];
 int ans[MAXN];
 int n,m;//the number of nodes and sides
 double runningTime;
+string start_time;
 
 int main() {
+	start_time=getTime();
 	input_from_file();
 	clock_t startTime, endTime;
 	startTime=clock();
@@ -50,18 +55,40 @@ void input_from_file(){
 	}
 	int a,b;
 	m=0;
+	n=0;
 	while (readFile>>a>>b){
 		m++;
 		ending[m]=point[a];
 		point[a]=m;
 		ending[m]=b;
+		if (a>n) n=a;
+		if (b>n) n=b;
 	}
 	cout<<m<<endl;
 	readFile.close();
 }
 
 void output_to_file(){
+	ofstream writeFile(OUTPUT_FILE_NAME);
+	ofstream writeFile_log(OUTPUT_INFORMATION_FILE_NAME,ios::app);
+	cout<<"running time:"<<setiosflags(ios::fixed)<<setprecision(6)<<runningTime<<"s"<<endl;
+	writeFile_log<<"start time:"<<start_time<<endl;
+	writeFile_log<<"input_file:"<<INPUT_FILE_NAME<<endl;
+	writeFile_log<<"output_file"<<OUTPUT_FILE_NAME<<endl;
+	writeFile_log<<"node:"<<n<<endl;
+	writeFile_log<<"side:"<<m<<endl;
+	writeFile_log<<"running time:"<<setiosflags(ios::fixed)<<setprecision(6)<<runningTime<<"s"<<endl;
+	writeFile_log<<"---------------------------"<<endl;
+	writeFile.close();
+	writeFile_log.close();
+}
 
+string getTime(){
+	time_t timep;
+	time (&timep);
+	char tmp[64];
+	strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S",localtime(&timep) );
+	return tmp;
 }
 
 void random_calculate(){
