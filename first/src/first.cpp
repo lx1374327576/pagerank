@@ -17,6 +17,7 @@
 #define INPUT_FILE_NAME "WikiData.txt"
 #define OUTPUT_FILE_NAME "WikiData_out.txt"
 #define OUTPUT_INFORMATION_FILE_NAME "file_info.txt"
+#define EPS 1e-2
 
 using namespace std;
 
@@ -29,7 +30,8 @@ void output_to_file();
 string getTime();
 
 int point[MAXN],ending[MAXM],next[MAXM];
-int ans[MAXN];
+int queue[MAXN];
+double ans[MAXN];
 int n,m;//the number of nodes and sides
 double runningTime;
 string start_time;
@@ -70,6 +72,9 @@ void input_from_file(){
 
 void output_to_file(){
 	ofstream writeFile(OUTPUT_FILE_NAME);
+	for (int i=1;i<=n;i++){
+		writeFile<<"node "<<i<<"expect value: "<<setiosflags(ios::fixed)<<setprecision(6)<<ans[i]<<endl;
+	}
 	ofstream writeFile_log(OUTPUT_INFORMATION_FILE_NAME,ios::app);
 	cout<<"running time:"<<setiosflags(ios::fixed)<<setprecision(6)<<runningTime<<"s"<<endl;
 	writeFile_log<<"start time:"<<start_time<<endl;
