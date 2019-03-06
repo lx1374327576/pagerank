@@ -12,12 +12,14 @@
 #include <iostream>
 #include <ctime>
 #include <iomanip>
+
 #define MAXN 50005
 #define MAXM 5000005
 #define INPUT_FILE_NAME "WikiData.txt"
 #define OUTPUT_FILE_NAME "WikiData_out.txt"
 #define OUTPUT_INFORMATION_FILE_NAME "file_info.txt"
-#define EPS 1e-2
+#define RESTART_COE 0.15 //the start of a new page
+#define EPS 1e-8
 
 using namespace std;
 
@@ -27,11 +29,13 @@ void random_calculate();
 
 void output_to_file();
 
+double abs(double x){if (x<0)return -x;else return x;}
+
 string getTime();
 
-int point[MAXN],ending[MAXM],next[MAXM];
+int point[MAXN],ending[MAXM],next_side[MAXM];
 int queue[MAXN];
-double ans[MAXN];
+double ans[MAXN],ans_tmp[MAXN];
 int n,m;//the number of nodes and sides
 double runningTime;
 string start_time;
@@ -60,12 +64,13 @@ void input_from_file(){
 	n=0;
 	while (readFile>>a>>b){
 		m++;
-		ending[m]=point[a];
+		next_side[m]=point[a];
 		point[a]=m;
 		ending[m]=b;
 		if (a>n) n=a;
 		if (b>n) n=b;
 	}
+	cout<<n<<endl;
 	cout<<m<<endl;
 	readFile.close();
 }
@@ -73,13 +78,13 @@ void input_from_file(){
 void output_to_file(){
 	ofstream writeFile(OUTPUT_FILE_NAME);
 	for (int i=1;i<=n;i++){
-		writeFile<<"node "<<i<<"expect value: "<<setiosflags(ios::fixed)<<setprecision(6)<<ans[i]<<endl;
+		writeFile<<"node "<<i<<" expect value: "<<setiosflags(ios::fixed)<<setprecision(10)<<ans[i]<<endl;
 	}
 	ofstream writeFile_log(OUTPUT_INFORMATION_FILE_NAME,ios::app);
 	cout<<"running time:"<<setiosflags(ios::fixed)<<setprecision(6)<<runningTime<<"s"<<endl;
 	writeFile_log<<"start time:"<<start_time<<endl;
 	writeFile_log<<"input_file:"<<INPUT_FILE_NAME<<endl;
-	writeFile_log<<"output_file"<<OUTPUT_FILE_NAME<<endl;
+	writeFile_log<<"output_file:"<<OUTPUT_FILE_NAME<<endl;
 	writeFile_log<<"node:"<<n<<endl;
 	writeFile_log<<"side:"<<m<<endl;
 	writeFile_log<<"running time:"<<setiosflags(ios::fixed)<<setprecision(6)<<runningTime<<"s"<<endl;
@@ -97,5 +102,29 @@ string getTime(){
 }
 
 void random_calculate(){
-
+	cout<<"calculate start"<<endl;
+	for (int i=1;i<=n;i++)ans[i]=1.0/n;
+	int repeat_time=0;
+	int flag;
+	while (true){
+		flag=1;
+		for (int i=1;i<=n;i++)ans_tmp[i]=RESTART_COE/n;
+		for (int i=1;i<=n;i++){
+			int j=point[i];
+			int tmp=0;
+			while (j!=0){
+				tmp++;
+				queue[tmp]=ending[j];
+				j=next_side[j];
+			}
+			for (int j=1;j<=tmp;j++)ans_tmp[queue[j]]+=ans[i]*(1-RESTART_COE)/tmp;
+		}
+		for (int i=1;i<=n;i++){
+			if (abs(ans_tmp[i]-ans[i])>EPS)flag=0;
+			ans[i]=ans_tmp[i];
+		}
+		if (flag)break;
+		repeat_time++;
+		cout<<repeat_time<<endl;
+	}
 }

@@ -1,0 +1,7 @@
+start time:2019-03-06 17:03:16
+input_file:WikiData.txt
+output_file:WikiData_out.txt
+node:8297
+side:103689
+running time:0.020318s
+---------------------------
