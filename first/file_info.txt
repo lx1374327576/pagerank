@@ -5,3 +5,31 @@ node:8297
 side:103689
 running time:0.020318s
 ---------------------------
+start time:2019-03-06 17:12:15
+input_file:football.txt
+output_file:football_out.txt
+node:115
+side:613
+running time:0.000132s
+---------------------------
+start time:2019-03-06 17:13:28
+input_file:karate.txt
+output_file:karate_out.txt
+node:34
+side:78
+running time:0.000037s
+---------------------------
+start time:2019-03-06 17:14:02
+input_file:netscience.txt
+output_file:netscience_out.txt
+node:1588
+side:2740
+running time:0.000577s
+---------------------------
+start time:2019-03-06 17:14:51
+input_file:polblogs.txt
+output_file:polblogs_out.txt
+node:1490
+side:16718
+running time:0.006054s
+---------------------------

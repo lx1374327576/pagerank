@@ -15,8 +15,8 @@
 
 #define MAXN 50005
 #define MAXM 5000005
-#define INPUT_FILE_NAME "WikiData.txt"
-#define OUTPUT_FILE_NAME "WikiData_out.txt"
+#define INPUT_FILE_NAME "polblogs.txt"
+#define OUTPUT_FILE_NAME "polblogs_out.txt"
 #define OUTPUT_INFORMATION_FILE_NAME "file_info.txt"
 #define RESTART_COE 0.15 //the start of a new page
 #define EPS 1e-8
